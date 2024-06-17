@@ -1,5 +1,14 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import Home from "./home/Home";
+
 const Main = () => {
-  return <div>Main</div>;
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </div>
+  );
 };
 
 export default Main;
