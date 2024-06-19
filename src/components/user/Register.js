@@ -2,7 +2,8 @@ import { useState } from "react";
 import Layout from "../Layout";
 import { showError, showLoading } from "../../utils/messages";
 import { register } from "../../api/apiAuth";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { isAuthenticated } from "../../utils/auth";
 
 const Register = () => {
   const [values, setValues] = useState({
@@ -122,6 +123,7 @@ const Register = () => {
 
   return (
     <Layout title="Register" className="container col-md-8 offset-md-2">
+      {isAuthenticated() ? <Navigate to="/" replace /> : ""}
       {showSuccess()}
       {showLoading(loading)}
       {showError(error, error)}

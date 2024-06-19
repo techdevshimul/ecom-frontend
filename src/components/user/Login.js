@@ -3,7 +3,7 @@ import Layout from "../Layout";
 import { showError, showLoading } from "../../utils/messages";
 import { login } from "../../api/apiAuth";
 import { Navigate } from "react-router-dom";
-import { authenticate } from "../../utils/auth";
+import { authenticate, isAuthenticated, userInfo } from "../../utils/auth";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -105,7 +105,9 @@ const Login = () => {
   );
 
   const redirectUser = () => {
-    if (redirect) return <Navigate to="/" replace />;
+    if (redirect)
+      return <Navigate to={`/${userInfo().role}/dashboard`} replace />;
+    if (isAuthenticated()) return <Navigate to="/" replace />;
   };
 
   return (
