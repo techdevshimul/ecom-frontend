@@ -7,6 +7,7 @@ import Dashboard from "./user/Dashboard";
 import AdminRoute from "./protectedRoutes/AdminRoute";
 import AdminDashboard from "./admin/AdminDashboard";
 import CreateCategory from "./admin/CreateCategory";
+import CreateProduct from "./admin/CreateProduct";
 
 const Main = () => {
   return (
@@ -36,6 +37,14 @@ const Main = () => {
           element={
             <AdminRoute>
               <CreateCategory />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/create/product"
+          element={
+            <AdminRoute>
+              <CreateProduct />
             </AdminRoute>
           }
         />
