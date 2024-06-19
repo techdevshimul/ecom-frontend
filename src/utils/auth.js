@@ -1,17 +1,22 @@
 import { jwtDecode } from "jwt-decode";
 
 export const authenticate = (token, cb) => {
-  if (typeof window != "undefined") {
+  if (typeof window !== "undefined") {
     localStorage.setItem("jwt", JSON.stringify(token));
     cb();
   }
 };
 
 export const isAuthenticated = () => {
-  if (typeof window !== "undefined") return false;
+  if (typeof window === "undefined") return false;
   if (localStorage.getItem("jwt")) {
     const { exp } = jwtDecode(JSON.parse(localStorage.getItem("jwt")));
-    return new Date().getTime() < exp * 1000;
+    if (new Date().getTime() < exp * 1000) {
+      return true;
+    } else {
+      localStorage.removeItem("jwt");
+      return false;
+    }
   } else return false;
 };
 

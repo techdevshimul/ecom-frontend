@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { signout, isAuthenticated } from "../utils/auth";
 
 const isActive = (location, path) => {
   if (location.pathname === path) {
@@ -10,6 +11,7 @@ const isActive = (location, path) => {
 
 const Menu = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <nav className="navbar navbar-dark bg-dark">
@@ -19,24 +21,47 @@ const Menu = () => {
             Home
           </Link>
         </li>
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            style={isActive(location, "/login")}
-            to="/login"
-          >
-            Login
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            style={isActive(location, "/register")}
-            to="/register"
-          >
-            Register
-          </Link>
-        </li>
+
+        {!isAuthenticated() && (
+          <>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                style={isActive(location, "/login")}
+                to="/login"
+              >
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                style={isActive(location, "/register")}
+                to="/register"
+              >
+                Register
+              </Link>
+            </li>
+          </>
+        )}
+
+        {isAuthenticated() && (
+          <>
+            <li className="nav-item">
+              <span
+                className="nav-link"
+                style={{ cursor: "pointer", color: "grey" }}
+                onClick={() => {
+                  signout(() => {
+                    navigate("/login");
+                  });
+                }}
+              >
+                Log Out
+              </span>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
