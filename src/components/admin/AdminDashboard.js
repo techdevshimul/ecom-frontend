@@ -11,7 +11,7 @@ const AdminDashboard = () => {
         <h4 className="card-header">User Links</h4>
         <ul className="list-group">
           <li className="list-group-item">
-            <Link className="nav-link" to="#">
+            <Link className="nav-link" to="/create/category">
               Create Category
             </Link>
           </li>

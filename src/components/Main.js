@@ -6,6 +6,7 @@ import PrivateRoute from "./protectedRoutes/PrivateRoute";
 import Dashboard from "./user/Dashboard";
 import AdminRoute from "./protectedRoutes/AdminRoute";
 import AdminDashboard from "./admin/AdminDashboard";
+import CreateCategory from "./admin/CreateCategory";
 
 const Main = () => {
   return (
@@ -27,6 +28,14 @@ const Main = () => {
           element={
             <AdminRoute>
               <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/create/category"
+          element={
+            <AdminRoute>
+              <CreateCategory />
             </AdminRoute>
           }
         />
