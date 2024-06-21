@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../Layout";
 import { Link } from "react-router-dom";
 import { showError, showSuccess, showLoading } from "../../utils/messages";
-import { getCategories } from "../../api/apiAdmin";
+import { getCategories, createProduct } from "../../api/apiAdmin";
+import { userInfo } from "../../utils/auth";
 
 const CreateProduct = () => {
   const [values, setValues] = useState({
     name: "",
     description: "",
     price: "",
-    category: "",
     categories: [],
+    category: "",
     quantity: "",
     loading: false,
     error: false,
@@ -42,19 +43,63 @@ const CreateProduct = () => {
           formData: new FormData(),
         });
       })
-      .catch((err) => {
+      .catch((error) => {
         setValues({
           ...values,
-          error: "Failed To Load Categories!",
+          error: "Failed to load categories!",
           formData: new FormData(),
         });
       });
-  });
+  }, []);
 
-  const handleChange = (e) => {};
+  const handleChange = (e) => {
+    const value =
+      e.target.name === "photo" ? e.target.files[0] : e.target.value;
+    formData.set(e.target.name, value);
+    setValues({
+      ...values,
+      [e.target.name]: value,
+      error: false,
+      success: false,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setValues({
+      ...values,
+      error: false,
+      loading: true,
+      disabled: true,
+      success: false,
+    });
+    const { token } = userInfo();
+    createProduct(token, formData)
+      .then((response) => {
+        setValues({
+          ...values,
+          name: "",
+          description: "",
+          price: "",
+          category: "",
+          quantity: "",
+          loading: false,
+          disabled: false,
+          success: true,
+          error: false,
+        });
+      })
+      .catch((error) => {
+        let errMsg = "Something went wrong!";
+        if (error.response) errMsg = error.response.data;
+        setValues({
+          ...values,
+          error: errMsg,
+          loading: false,
+          success: false,
+          disabled: false,
+        });
+      });
   };
 
   const productForm = () => (
@@ -123,15 +168,13 @@ const CreateProduct = () => {
           className="form-control"
           required
         >
-          <option value="">--- Select Category ---</option>
+          <option value="">----Select Category----</option>
           {categories &&
-            categories.map((item) => {
-              return (
-                <option value={item._id} key={item._id}>
-                  {item.name}
-                </option>
-              );
-            })}
+            categories.map((item) => (
+              <option value={item._id} key={item._id}>
+                {item.name}
+              </option>
+            ))}
         </select>
       </div>
       <button
