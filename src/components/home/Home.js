@@ -7,9 +7,11 @@ import {
   getProducts,
   getProductDetails,
 } from "../../api/apiProduct";
+import CheckBox from "./CheckBox";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState();
   const [limit, setLimit] = useState(30);
   const [order, setOrder] = useState("desc");
   const [sortBy, setSortBy] = useState("createdAt");
@@ -20,10 +22,34 @@ const Home = () => {
     getProducts(sortBy, order, limit)
       .then((response) => setProducts(response.data))
       .catch((err) => setError("Failed to load products!"));
+
+    getCategories()
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((err) => {
+        setError("Failed To Load Categories!");
+      });
   }, []);
+
+  const showFilters = () => {
+    return (
+      <>
+        <div className="row">
+          <div className="col-sm-3">
+            <h5>Filter By Categories: </h5>
+            <ul>
+              <CheckBox categories={categories} />
+            </ul>
+          </div>
+        </div>
+      </>
+    );
+  };
 
   return (
     <Layout title="Home Page" className="container-fluid">
+      {categories && showFilters()}
       <div style={{ width: "100%" }}>
         {showError(error, error)}
         {showSuccess(success, "Added to cart successfully!")}

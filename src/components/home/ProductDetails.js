@@ -52,9 +52,9 @@ const ProductDetails = (props) => {
           {product.price}
           <p>
             {product.quantity ? (
-              <span class="badge badge-pill badge-primary">In Stock</span>
+              <span class="badge rounded-pill bg-primary">In Stock</span>
             ) : (
-              <span class="badge badge-pill badge-danger">Out of Stock</span>
+              <span class="badge rounded-pill bg-danger">Out of Stock</span>
             )}
           </p>
           <p>{product.description}</p>

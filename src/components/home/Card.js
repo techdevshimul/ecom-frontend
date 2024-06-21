@@ -33,9 +33,11 @@ const Card = ({ product }) => {
           {product.price}
           <p>
             {product.quantity ? (
-              <span class="badge badge-pill badge-primary">In Stock</span>
+              <span className="badge badge-pill badge-primary">In Stock</span>
             ) : (
-              <span class="badge badge-pill badge-danger">Out of Stock</span>
+              <span className="badge badge-pill badge-danger">
+                Out of Stock
+              </span>
             )}
           </p>
           <Link to={`/product/${product._id}`}>
