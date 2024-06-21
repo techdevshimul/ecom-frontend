@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./home/Home";
 import Login from "./user/Login";
 import Register from "./user/Register";
+import ProductDetails from "./home/ProductDetails";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
 import Dashboard from "./user/Dashboard";
 import AdminRoute from "./protectedRoutes/AdminRoute";
@@ -16,6 +17,7 @@ const Main = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
         <Route
           path="/user/dashboard"
           element={
