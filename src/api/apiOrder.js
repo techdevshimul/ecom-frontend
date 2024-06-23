@@ -17,3 +17,20 @@ export const getCartItems = (token) => {
     },
   });
 };
+
+export const updateCartItems = (token, cartItem) => {
+  return axios.put(`${API}/cart`, cartItem, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const deletCartItem = (token, cartItem) => {
+  return axios.delete(`${API}/cart/${cartItem._id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
