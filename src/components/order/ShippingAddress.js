@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../Layout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getProfile, updateProfile } from "../../api/apiOrder";
 import { userInfo } from "../../utils/auth";
 
@@ -17,6 +17,8 @@ const ShippingAddress = () => {
   const [redirect, setRedirect] = useState(false);
 
   const { phone, address1, address2, city, postcode, country } = values;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProfile(userInfo().token)
@@ -119,6 +121,7 @@ const ShippingAddress = () => {
         description="Complete your order!"
         className="container"
       >
+        {redirect ? navigate("/checkout") : ""}
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
