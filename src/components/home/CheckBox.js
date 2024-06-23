@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const CheckBox = ({ categories }) => {
+const CheckBox = ({ categories, handleFilters }) => {
   const [checked, setChecked] = useState([]);
   const checkedIds = [...checked];
 
@@ -13,6 +13,8 @@ const CheckBox = ({ categories }) => {
     }
 
     setChecked(checkedIds);
+
+    handleFilters(checkedIds);
   };
 
   useEffect(() => {

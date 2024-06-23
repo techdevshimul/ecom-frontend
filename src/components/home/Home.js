@@ -6,6 +6,7 @@ import {
   getCategories,
   getProducts,
   getProductDetails,
+  getFilteredProducts,
 } from "../../api/apiProduct";
 import CheckBox from "./CheckBox";
 
@@ -17,20 +18,47 @@ const Home = () => {
   const [sortBy, setSortBy] = useState("createdAt");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [filters, setFilters] = useState({
+    category: [],
+    price: [],
+  });
+  const [skip, setSkip] = useState();
 
   useEffect(() => {
     getProducts(sortBy, order, limit)
-      .then((response) => setProducts(response.data))
+      .then((response) => {
+        setProducts(response.data);
+        setError(false);
+      })
       .catch((err) => setError("Failed to load products!"));
 
     getCategories()
       .then((response) => {
+        setError(false);
         setCategories(response.data);
       })
       .catch((err) => {
         setError("Failed To Load Categories!");
       });
   }, []);
+
+  const handleFilters = (myFilters, filterBy) => {
+    const newFilters = { ...filters };
+    if (filterBy === "category") {
+      newFilters[filterBy] = myFilters;
+    }
+
+    setFilters(newFilters);
+
+    getFilteredProducts(skip, limit, newFilters, order, sortBy)
+      .then((response) => {
+        setProducts(response.data);
+        setError(false);
+      })
+      .catch((err) => {
+        setError("Failed To Load Products!");
+      });
+  };
 
   const showFilters = () => {
     return (
@@ -39,8 +67,14 @@ const Home = () => {
           <div className="col-sm-3">
             <h5>Filter By Categories: </h5>
             <ul>
-              <CheckBox categories={categories} />
+              <CheckBox
+                handleFilters={(myFilters) =>
+                  handleFilters(myFilters, "category")
+                }
+                categories={categories}
+              />
             </ul>
+            {/* {JSON.stringify(filters)} */}
           </div>
         </div>
       </>
