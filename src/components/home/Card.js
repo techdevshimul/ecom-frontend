@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { API } from "../../utils/config";
 
-const Card = ({ product }) => {
+const Card = ({ product, handleAddToCart }) => {
   const titleStyle = {
     display: "block",
     textOverflow: "ellipsis",
@@ -48,7 +48,10 @@ const Card = ({ product }) => {
           {product.quantity ? (
             <>
               &nbsp;
-              <button className="btn btn-outline-primary btn-sm">
+              <button
+                onClick={handleAddToCart}
+                className="btn btn-outline-primary btn-sm"
+              >
                 Add to Cart
               </button>
             </>

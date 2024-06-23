@@ -11,6 +11,8 @@ import {
 import CheckBox from "./CheckBox";
 import RadioBox from "./RadioBox";
 import { prices } from "../../utils/prices";
+import { isAuthenticated, userInfo } from "../../utils/auth";
+import { addToCart } from "../../api/apiOrder";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -43,6 +45,31 @@ const Home = () => {
         setError("Failed To Load Categories!");
       });
   }, []);
+
+  const handleAddToCart = (product) => () => {
+    if (isAuthenticated()) {
+      setError(false);
+      setSuccess(false);
+      const user = userInfo();
+      const cartItem = {
+        user: user._id,
+        product: product._id,
+        price: product.price,
+      };
+
+      addToCart(user.token, cartItem)
+        .then((response) => {
+          setSuccess(true);
+        })
+        .catch((err) => {
+          if (err.response) setError(err.response.data);
+          else setError("Adding To Cart Failed!");
+        });
+    } else {
+      setSuccess(false);
+      setError("Please Login First!");
+    }
+  };
 
   const handleFilters = (myFilters, filterBy) => {
     const newFilters = { ...filters };
@@ -114,7 +141,11 @@ const Home = () => {
       <div className="row">
         {products &&
           products.map((product) => (
-            <Card product={product} key={product._id} />
+            <Card
+              handleAddToCart={handleAddToCart(product)}
+              product={product}
+              key={product._id}
+            />
           ))}
       </div>
     </Layout>
