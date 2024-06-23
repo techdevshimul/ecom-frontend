@@ -10,6 +10,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import CreateCategory from "./admin/CreateCategory";
 import CreateProduct from "./admin/CreateProduct";
 import Cart from "./order/Cart";
+import ShippingAddress from "./order/ShippingAddress";
 
 const Main = () => {
   return (
@@ -32,6 +33,15 @@ const Main = () => {
           element={
             <PrivateRoute>
               <Cart />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/shipping"
+          element={
+            <PrivateRoute>
+              <ShippingAddress />
             </PrivateRoute>
           }
         />
