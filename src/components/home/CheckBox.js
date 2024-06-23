@@ -18,7 +18,7 @@ const CheckBox = ({ categories, handleFilters }) => {
   };
 
   useEffect(() => {
-    console.log(JSON.stringify(checked));
+    // console.log(JSON.stringify(checked));
   }, [checked]);
 
   return categories.map((category) => (

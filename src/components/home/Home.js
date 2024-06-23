@@ -9,6 +9,8 @@ import {
   getFilteredProducts,
 } from "../../api/apiProduct";
 import CheckBox from "./CheckBox";
+import RadioBox from "./RadioBox";
+import { prices } from "../../utils/prices";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -48,6 +50,17 @@ const Home = () => {
       newFilters[filterBy] = myFilters;
     }
 
+    if (filterBy === "price") {
+      const data = prices;
+      let arr = [];
+      for (let i in data) {
+        if (data[i].id === parseInt(myFilters)) {
+          arr = data[i].arr;
+        }
+      }
+      newFilters[filterBy] = arr;
+    }
+
     setFilters(newFilters);
 
     getFilteredProducts(skip, limit, newFilters, order, sortBy)
@@ -75,6 +88,16 @@ const Home = () => {
               />
             </ul>
             {/* {JSON.stringify(filters)} */}
+          </div>
+
+          <div className="col-sm-5">
+            <h5>Filter By Price :</h5>
+            <div className="row">
+              <RadioBox
+                prices={prices}
+                handleFilters={(myFilters) => handleFilters(myFilters, "price")}
+              />
+            </div>
           </div>
         </div>
       </>
