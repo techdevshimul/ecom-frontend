@@ -22,14 +22,14 @@ const ProductDetails = (props) => {
   return (
     <Layout title="Product Page">
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
             <Link to="/">Home</Link>
           </li>
-          <li class="breadcrumb-item">
+          <li className="breadcrumb-item">
             <a href="#">Product</a>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">
+          <li className="breadcrumb-item active" aria-current="page">
             {product.category ? product.category.name : ""}
           </li>
         </ol>
@@ -41,7 +41,7 @@ const ProductDetails = (props) => {
       <div className="row container">
         <div className="col-6">
           <img
-            src={`${API}/product/photo/${product._id}`}
+            src={product && `${API}/product/photo/${product._id}`}
             alt={product.name}
             width="100%"
           />
@@ -52,9 +52,9 @@ const ProductDetails = (props) => {
           {product.price}
           <p>
             {product.quantity ? (
-              <span class="badge rounded-pill bg-primary">In Stock</span>
+              <span className="badge rounded-pill bg-primary">In Stock</span>
             ) : (
-              <span class="badge rounded-pill bg-danger">Out of Stock</span>
+              <span className="badge rounded-pill bg-danger">Out of Stock</span>
             )}
           </p>
           <p>{product.description}</p>

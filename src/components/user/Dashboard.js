@@ -30,9 +30,6 @@ const Dashboard = () => {
     <div className="card mb-5">
       <h3 className="card-header">Purchase History</h3>
       {<PurchaseHistory />}
-      <ul className="list-group">
-        <li className="list-group-item">History</li>
-      </ul>
     </div>
   );
 

@@ -17,7 +17,7 @@ import { addToCart } from "../../api/apiOrder";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState();
-  const [limit, setLimit] = useState(30);
+  const [limit, setLimit] = useState(2);
   const [order, setOrder] = useState("desc");
   const [sortBy, setSortBy] = useState("createdAt");
   const [error, setError] = useState(false);
@@ -26,7 +26,8 @@ const Home = () => {
     category: [],
     price: [],
   });
-  const [skip, setSkip] = useState();
+  const [skip, setSkip] = useState(limit);
+  const [toggleSkipButton, setToggleSkipButton] = useState(false);
 
   useEffect(() => {
     getProducts(sortBy, order, limit)
@@ -73,8 +74,10 @@ const Home = () => {
 
   const handleFilters = (myFilters, filterBy) => {
     const newFilters = { ...filters };
+
     if (filterBy === "category") {
       newFilters[filterBy] = myFilters;
+      setSkip(limit);
     }
 
     if (filterBy === "price") {
@@ -86,13 +89,20 @@ const Home = () => {
         }
       }
       newFilters[filterBy] = arr;
+      setSkip(limit);
     }
 
     setFilters(newFilters);
 
-    getFilteredProducts(skip, limit, newFilters, order, sortBy)
+    getFilteredProducts(0, limit, newFilters, order, sortBy)
       .then((response) => {
         setProducts(response.data);
+        if (response.data.length === 0) {
+          setToggleSkipButton(true);
+          setSkip(limit);
+        } else {
+          setToggleSkipButton(false);
+        }
         setError(false);
       })
       .catch((err) => {
@@ -131,6 +141,27 @@ const Home = () => {
     );
   };
 
+  let setSkipNumber = () => {
+    getFilteredProducts(skip, limit, filters, order, sortBy)
+      .then((response) => {
+        setProducts([...products, ...response.data]);
+        if (response.data.length === 0) {
+          setToggleSkipButton(true);
+          setSkip(limit);
+        } else {
+          setToggleSkipButton(false);
+        }
+        setError(false);
+      })
+      .catch((err) => {
+        setError("Failed To Load Products!");
+      });
+
+    const newSkip = skip + limit;
+
+    setSkip(newSkip);
+  };
+
   return (
     <Layout title="Home Page" className="container-fluid">
       {categories && showFilters()}
@@ -147,6 +178,15 @@ const Home = () => {
               key={product._id}
             />
           ))}
+      </div>
+      <div className="d-flex justify-content-center my-4">
+        <button
+          className="btn btn-primary"
+          disabled={toggleSkipButton}
+          onClick={() => setSkipNumber()}
+        >
+          Load More...
+        </button>
       </div>
     </Layout>
   );
