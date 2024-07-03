@@ -5,7 +5,6 @@ import { showError, showSuccess } from "../../utils/messages";
 import {
   getCategories,
   getProducts,
-  getProductDetails,
   getFilteredProducts,
 } from "../../api/apiProduct";
 import CheckBox from "./CheckBox";
@@ -18,7 +17,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState();
   const [limit, setLimit] = useState(2);
-  const [order, setOrder] = useState("desc");
+  const [order, setOrder] = useState("descending");
   const [sortBy, setSortBy] = useState("createdAt");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -72,8 +71,21 @@ const Home = () => {
     }
   };
 
+  const handleChangeSortBy = (event) => {
+    setSortBy(event.target.value);
+    handleFilters(filters, event.target.value);
+  };
+
+  const handleChangeOrder = (event) => {
+    setOrder(event.target.value);
+    handleFilters(filters, event.target.value);
+  };
+
   const handleFilters = (myFilters, filterBy) => {
     const newFilters = { ...filters };
+
+    let newOrder = order;
+    let newSortBy = sortBy;
 
     if (filterBy === "category") {
       newFilters[filterBy] = myFilters;
@@ -94,7 +106,22 @@ const Home = () => {
 
     setFilters(newFilters);
 
-    getFilteredProducts(0, limit, newFilters, order, sortBy)
+    if (
+      filterBy === "price" ||
+      filterBy === "sold" ||
+      filterBy === "review" ||
+      filterBy === "createdAt"
+    ) {
+      setSkip(limit);
+      newSortBy = filterBy;
+    }
+
+    if (filterBy === "descending" || filterBy === "ascending") {
+      setSkip(limit);
+      newOrder = filterBy;
+    }
+
+    getFilteredProducts(0, limit, newFilters, newOrder, newSortBy)
       .then((response) => {
         setProducts(response.data);
         if (response.data.length === 0) {
@@ -124,7 +151,6 @@ const Home = () => {
                 categories={categories}
               />
             </ul>
-            {/* {JSON.stringify(filters)} */}
           </div>
 
           <div className="col-sm-5">
@@ -134,6 +160,36 @@ const Home = () => {
                 prices={prices}
                 handleFilters={(myFilters) => handleFilters(myFilters, "price")}
               />
+            </div>
+          </div>
+
+          <div className="col-sm-2">
+            <h5>Item Order :</h5>
+            <div>
+              <select
+                className="form-select"
+                value={order}
+                onChange={handleChangeOrder}
+              >
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="col-sm-2">
+            <h5>Sort By :</h5>
+            <div>
+              <select
+                className="form-select"
+                value={sortBy}
+                onChange={handleChangeSortBy}
+              >
+                <option value="price">Price</option>
+                <option value="sold">Sold</option>
+                <option value="review">Review</option>
+                <option value="createdAt">Created</option>
+              </select>
             </div>
           </div>
         </div>
@@ -179,14 +235,27 @@ const Home = () => {
             />
           ))}
       </div>
-      <div className="d-flex justify-content-center my-4">
+      <div className="d-flex align-items-center my-4 flex-column">
+        {/* {toggleSkipButton ? (
+          <p
+            style={{ fontWeight: "bold", fontSize: 18 }}
+            className="text-danger"
+          >
+            All Products Loaded...
+          </p>
+        ) : (
+          ""
+        )} */}
+
         <button
           className="btn btn-primary"
           disabled={toggleSkipButton}
           onClick={() => setSkipNumber()}
+          style={{ width: "150px" }}
         >
           Load More...
         </button>
+        <br />
       </div>
     </Layout>
   );
