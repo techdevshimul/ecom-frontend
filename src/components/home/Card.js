@@ -19,12 +19,17 @@ const Card = ({ product, handleAddToCart }) => {
   return (
     <div className="col-md-3 col-sm-4 col-xs-12 mb-3">
       <div className="card">
-        <img
-          src={`${API}/product/photo/${product._id}`}
-          alt={product.name}
-          style={imgStyle}
-          className="card-img-top"
-        />
+        {product && product._id ? (
+          <img
+            src={`${API}/product/photo/${product._id}`}
+            alt={product.name}
+            style={imgStyle}
+            className="card-img-top"
+          />
+        ) : (
+          ""
+        )}
+
         <div className="card-body">
           <div style={{ minHeight: "3em" }}>
             <p style={titleStyle}>{product.name}</p>

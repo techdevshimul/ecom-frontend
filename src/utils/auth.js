@@ -22,8 +22,12 @@ export const isAuthenticated = () => {
 
 export const userInfo = () => {
   const jwt = JSON.parse(localStorage.getItem("jwt"));
-  const decoded = jwtDecode(jwt);
-  return { ...decoded, token: jwt };
+  if (jwt) {
+    const decoded = jwtDecode(jwt);
+    return { ...decoded, token: jwt };
+  } else {
+    return null;
+  }
 };
 
 export const signout = (cb) => {

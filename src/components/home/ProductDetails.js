@@ -5,6 +5,7 @@ import { API } from "../../utils/config";
 import { Link } from "react-router-dom";
 import { getProductDetails } from "../../api/apiProduct";
 import { showSuccess, showError } from "../../utils/messages";
+import Reviews from "./Reviews/Reviews";
 
 const ProductDetails = (props) => {
   const [product, setProduct] = useState({});
@@ -40,11 +41,15 @@ const ProductDetails = (props) => {
       </div>
       <div className="row container">
         <div className="col-6">
-          <img
-            src={product && `${API}/product/photo/${product._id}`}
-            alt={product.name}
-            width="100%"
-          />
+          {product && product._id ? (
+            <img
+              src={`${API}/product/photo/${product._id}`}
+              alt={product.name}
+              width="100%"
+            />
+          ) : (
+            ""
+          )}
         </div>
         <div className="col-6">
           <h3>{product.name}</h3>
@@ -69,6 +74,9 @@ const ProductDetails = (props) => {
             ""
           )}
         </div>
+      </div>
+      <div>
+        <Reviews productId={id} />
       </div>
     </Layout>
   );
