@@ -11,12 +11,20 @@ const ProductDetails = (props) => {
   const [product, setProduct] = useState({});
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [totalRating, setTotalRating] = useState();
+
+  const setTotalRatingFunc = (total_rating) => {
+    setTotalRating(total_rating);
+  };
 
   const { id } = useParams();
 
   useEffect(() => {
     getProductDetails(id)
-      .then((response) => setProduct(response.data))
+      .then((response) => {
+        setProduct(response.data);
+        setTotalRating(response.data.total_rating);
+      })
       .catch((err) => setError("Failed to load products"));
   }, [id]);
 
@@ -62,6 +70,12 @@ const ProductDetails = (props) => {
               <span className="badge rounded-pill bg-danger">Out of Stock</span>
             )}
           </p>
+          <p>
+            <span style={{ fontWeight: "bold" }}>Rating :</span>&nbsp;
+            {totalRating !== 0 && totalRating !== undefined
+              ? totalRating.toFixed(2) + " Out Of 5.00"
+              : "Not Rated Yet!"}
+          </p>
           <p>{product.description}</p>
           {product.quantity ? (
             <>
@@ -76,7 +90,12 @@ const ProductDetails = (props) => {
         </div>
       </div>
       <div>
-        <Reviews productId={id} />
+        <Reviews
+          setTotalRatingFunc={(total_rating) =>
+            setTotalRatingFunc(total_rating)
+          }
+          productId={id}
+        />
       </div>
     </Layout>
   );

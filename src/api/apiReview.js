@@ -12,3 +12,11 @@ export const createReview = (token, data) => {
     },
   });
 };
+
+export const updateTotalRating = (token, id, totalRating) => {
+  return axios.post(`${API}/product/${id}/updatetotalrating`, totalRating, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

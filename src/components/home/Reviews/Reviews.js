@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { createReview, getReviews } from "../../../api/apiReview";
+import {
+  createReview,
+  getReviews,
+  updateTotalRating,
+} from "../../../api/apiReview";
 import Review from "./Review";
 import { userInfo } from "../../../utils/auth";
+import { setTotalRating } from "../ProductDetails";
 
-const Reviews = ({ productId }) => {
+const Reviews = ({ productId, setTotalRatingFunc }) => {
   const [reviews, setReviews] = useState();
   const [values, setValues] = useState({
     comment: "",
@@ -15,6 +20,18 @@ const Reviews = ({ productId }) => {
   });
 
   const { comment, rating, loading, error, disabled, success } = values;
+
+  const calculateRating = (reviews) => {
+    let sumOfRatings = reviews.reduce((i, review) => i + review.rating, 0);
+    let result = (sumOfRatings / 5 / reviews.length) * 5;
+    updateTotalRating(userInfo().token, productId, { total_rating: result })
+      .then((response) => {
+        console.log(response.data);
+        setTotalRatingFunc(result);
+        // console.log(setTotalRating);
+      })
+      .catch((err) => console.log(err.message));
+  };
 
   const handleChangeRating = (e) => {
     setValues({ ...values, rating: e.target.value });
@@ -56,7 +73,12 @@ const Reviews = ({ productId }) => {
             loading: false,
             success: response.data.message,
           });
-          getLatestReviews();
+          getReviews(productId)
+            .then((response) => {
+              setReviews(response.data);
+              calculateRating(response.data);
+            })
+            .catch((err) => console.log(err));
           // setTimeout(() => {
           //   setValues({
           //     ...values,
@@ -79,23 +101,19 @@ const Reviews = ({ productId }) => {
     }
   };
 
-  const getLatestReviews = () => {
+  useEffect(() => {
     getReviews(productId)
       .then((response) => {
         setReviews(response.data);
       })
       .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getLatestReviews();
   }, [productId]);
 
   return (
     <div>
       {userInfo() !== null ? (
         <div style={{ border: "1px solid grey", margin: 5, padding: 5 }}>
-          <h1>Add A Review</h1>
+          <h2>Add A Review</h2>
           <p style={{ color: "green" }}>{success}</p>
           <div>
             <form onSubmit={handleSubmit}>

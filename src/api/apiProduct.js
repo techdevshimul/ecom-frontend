@@ -36,3 +36,7 @@ export const getFilteredProducts = (
     },
   });
 };
+
+export const getProductBySearch = (query) => {
+  return axios.post(`${API}/product/search?name=${query}`);
+};

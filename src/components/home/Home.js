@@ -6,6 +6,7 @@ import {
   getCategories,
   getProducts,
   getFilteredProducts,
+  getProductBySearch,
 } from "../../api/apiProduct";
 import CheckBox from "./CheckBox";
 import RadioBox from "./RadioBox";
@@ -27,6 +28,7 @@ const Home = () => {
   });
   const [skip, setSkip] = useState(limit);
   const [toggleSkipButton, setToggleSkipButton] = useState(false);
+  const [query, setQuery] = useState();
 
   useEffect(() => {
     getProducts(sortBy, order, limit)
@@ -92,6 +94,11 @@ const Home = () => {
       setSkip(limit);
     }
 
+    if (filterBy === "name") {
+      newFilters[filterBy] = myFilters;
+      setSkip(limit);
+    }
+
     if (filterBy === "price") {
       const data = prices;
       let arr = [];
@@ -109,7 +116,7 @@ const Home = () => {
     if (
       filterBy === "price" ||
       filterBy === "sold" ||
-      filterBy === "review" ||
+      filterBy === "total_rating" ||
       filterBy === "createdAt"
     ) {
       setSkip(limit);
@@ -187,7 +194,7 @@ const Home = () => {
               >
                 <option value="price">Price</option>
                 <option value="sold">Sold</option>
-                <option value="review">Review</option>
+                <option value="total_rating">Review</option>
                 <option value="createdAt">Created</option>
               </select>
             </div>
@@ -218,8 +225,21 @@ const Home = () => {
     setSkip(newSkip);
   };
 
+  const search = () => {
+    return (
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => handleFilters(e.target.value, "name")}
+        placeholder="Search for a product..."
+      />
+    );
+  };
+
   return (
     <Layout title="Home Page" className="container-fluid">
+      {search()}
+
       {categories && showFilters()}
       <div style={{ width: "100%" }}>
         {showError(error, error)}

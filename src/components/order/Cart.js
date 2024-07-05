@@ -14,6 +14,7 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [code, setCode] = useState("");
 
   const loadCart = () => {
     getCartItems(userInfo().token)
@@ -76,6 +77,15 @@ const Cart = () => {
       });
   };
 
+  const getDiscount = () => {
+    console.log(code);
+    setCode("");
+  };
+
+  const handleChangeCode = (e) => {
+    setCode(e.target.value);
+  };
+
   return (
     <Layout
       title="Your Cart"
@@ -126,7 +136,36 @@ const Cart = () => {
               ))}
             <tr>
               <th scope="row" />
-              <td colSpan={3}>Total</td>
+              <td colSpan={3} align="right">
+                Cart Total
+              </td>
+              <td align="right">৳ {getCartTotal()} </td>
+              <td />
+            </tr>
+            <tr>
+              <th scope="row" />
+              <td colSpan={3} align="right">
+                Discount Code
+              </td>
+              <td align="right">
+                <input
+                  value={code}
+                  type="text"
+                  name="code"
+                  placeholder="Write Discount Code!"
+                  onChange={(e) => handleChangeCode(e)}
+                />
+                <button style={{ marginLeft: 5 }} onClick={getDiscount}>
+                  Apply Code
+                </button>
+              </td>
+              <td />
+            </tr>
+            <tr>
+              <th scope="row" />
+              <td colSpan={3} align="right">
+                Amount To Be Paid
+              </td>
               <td align="right">৳ {getCartTotal()} </td>
               <td />
             </tr>
