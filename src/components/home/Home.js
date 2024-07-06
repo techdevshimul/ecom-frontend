@@ -145,7 +145,14 @@ const Home = () => {
 
   const showFilters = () => {
     return (
-      <>
+      <div
+        style={{
+          padding: 10,
+          border: "1px solid #ced4da",
+          borderRadius: ".5rem",
+          marginBottom: 10,
+        }}
+      >
         <div className="row">
           <div className="col-sm-3">
             <h5>Filter By Categories: </h5>
@@ -199,15 +206,21 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   };
 
   let setSkipNumber = () => {
     getFilteredProducts(skip, limit, filters, order, sortBy)
       .then((response) => {
-        setProducts([...products, ...response.data]);
-        console.log(response.data);
+        const newProducts = response.data.filter((newProduct) => {
+          return !products.some(
+            (existingProduct) => existingProduct._id === newProduct._id
+          );
+        });
+
+        setProducts([...products, ...newProducts]);
+
         if (response.data.length === 0) {
           setToggleSkipButton(true);
           setSkip(limit);
@@ -225,36 +238,40 @@ const Home = () => {
 
   const search = () => {
     return (
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => handleFilters(e.target.value, "name")}
-        placeholder="Search for a product..."
-      />
+      <form className="col-12 col-lg-auto mb-3 mb-lg-0">
+        <input
+          value={query}
+          onChange={(e) => handleFilters(e.target.value, "name")}
+          type="search"
+          className="form-control my-2"
+          placeholder="Search for a product..."
+        />
+      </form>
     );
   };
 
   return (
     <Layout title="Home Page" className="container-fluid">
-      {search()}
+      <div className="container">
+        {search()}
 
-      {categories && showFilters()}
-      <div style={{ width: "100%" }}>
-        {showError(error, error)}
-        {showSuccess(success, "Added to cart successfully!")}
-      </div>
-      <div className="row">
-        {products &&
-          products.map((product) => (
-            <Card
-              handleAddToCart={handleAddToCart(product)}
-              product={product}
-              key={product._id}
-            />
-          ))}
-      </div>
-      <div className="d-flex align-items-center my-4 flex-column">
-        {/* {toggleSkipButton ? (
+        {categories && showFilters()}
+        <div style={{ width: "100%" }}>
+          {showError(error, error)}
+          {showSuccess(success, "Added to cart successfully!")}
+        </div>
+        <div className="row">
+          {products &&
+            products.map((product) => (
+              <Card
+                handleAddToCart={handleAddToCart(product)}
+                product={product}
+                key={product._id}
+              />
+            ))}
+        </div>
+        <div className="d-flex align-items-center my-4 flex-column">
+          {/* {toggleSkipButton ? (
           <p
             style={{ fontWeight: "bold", fontSize: 18 }}
             className="text-danger"
@@ -265,15 +282,16 @@ const Home = () => {
           ""
         )} */}
 
-        <button
-          className="btn btn-primary"
-          disabled={toggleSkipButton}
-          onClick={() => setSkipNumber()}
-          style={{ width: "150px" }}
-        >
-          Load More...
-        </button>
-        <br />
+          <button
+            className="btn btn-primary"
+            disabled={toggleSkipButton}
+            onClick={() => setSkipNumber()}
+            style={{ width: "150px" }}
+          >
+            Load More...
+          </button>
+          <br />
+        </div>
       </div>
     </Layout>
   );

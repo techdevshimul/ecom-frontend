@@ -112,48 +112,57 @@ const Reviews = ({ productId, setTotalRatingFunc }) => {
   return (
     <div>
       {userInfo() !== null ? (
-        <div style={{ border: "1px solid grey", margin: 5, padding: 5 }}>
+        <div
+          style={{
+            border: "1px solid #ced4da",
+            borderRadius: ".5rem",
+            margin: 5,
+            padding: 5,
+          }}
+        >
           <h2>Add A Review</h2>
-          <p style={{ color: "green" }}>{success}</p>
-          <div>
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label className="text-muted">Comment :</label>
-                <input
-                  name="comment"
-                  type="text"
-                  className="form-control"
-                  value={comment}
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="text-muted">Rating:</label>
-                <div>
-                  <select
-                    className="form-select"
-                    value={rating}
-                    onChange={handleChangeRating}
-                  >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
+          <div className="m-2">
+            <p style={{ color: "green" }}>{success}</p>
+            <div>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label className="text-muted">Comment :</label>
+                  <input
+                    name="comment"
+                    type="text"
+                    className="form-control"
+                    value={comment}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
-              </div>
-              <br />
-              <button
-                type="submit"
-                className="btn btn-outline-primary"
-                disabled={disabled}
-              >
-                Submit Comment
-              </button>
-            </form>
+
+                <div className="form-group mt-2">
+                  <label className="text-muted">Rating:</label>
+                  <div>
+                    <select
+                      className="form-select"
+                      value={rating}
+                      onChange={handleChangeRating}
+                    >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
+                </div>
+                <br />
+                <button
+                  type="submit"
+                  className="btn btn-outline-primary"
+                  disabled={disabled}
+                >
+                  Submit Comment
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       ) : (
@@ -165,7 +174,9 @@ const Reviews = ({ productId, setTotalRatingFunc }) => {
             return <Review review={review} key={review._id} />;
           })
         ) : (
-          <p>Be The First One To Add Review On This Item!</p>
+          <p className="text-success ps-2">
+            Be The First One To Add Review On This Product!
+          </p>
         )}
       </div>
     </div>

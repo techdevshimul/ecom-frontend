@@ -4,8 +4,10 @@ import { userInfo } from "../../utils/auth";
 import Layout from "../Layout";
 import { Link, useNavigate } from "react-router-dom";
 import { getDiscountAPI } from "../../api/apiDiscount";
-import Payment from "./Payment";
-import { createDiscountPercentageAPI } from "../../api/apiDiscountPercentage";
+import {
+  createDiscountPercentageAPI,
+  deleteDiscountPercentageAPI,
+} from "../../api/apiDiscountPercentage";
 
 const Checkout = () => {
   const [orderItems, setOrderItems] = useState([]);
@@ -21,6 +23,7 @@ const Checkout = () => {
   const [discountPrice, setDiscountPrice] = useState();
   const [cartTotal, setCartTotal] = useState();
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const { phone, address1, address2, city, postcode, country } = values;
 
@@ -35,12 +38,36 @@ const Checkout = () => {
       .catch((err) => console.log(err));
   };
 
+  const deleteCoupon = () => {
+    deleteDiscountPercentageAPI(userInfo().token)
+      .then((response) => {
+        setDiscountPrice(cartTotal);
+        console.log(response.data);
+        // setError(false);
+        setSuccess(false);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
   useEffect(() => {
+    deleteCoupon();
     getProfile(userInfo().token)
       .then((response) => {
         setValues(response.data);
+        if (
+          !response.data.address1 ||
+          !response.data.city ||
+          !response.data.phone ||
+          !response.data.postcode ||
+          !response.data.country
+        )
+          navigate("/shipping");
       })
-      .catch((err) => {});
+      .catch((err) => {
+        navigate("/shipping");
+      });
     loadCart();
   }, []);
 
@@ -71,15 +98,18 @@ const Checkout = () => {
 
   const handleChangeCode = (e) => {
     setCode(e.target.value);
+    setError(false);
+    setSuccess(false);
   };
 
   const getDiscount = () => {
+    setError(false);
     getDiscountAPI(userInfo().token, code)
       .then((response) => {
-        console.log(response.data.percentage);
         createDiscountPercentageAPI(userInfo().token, response.data.percentage)
           .then((response) => {
             console.log(response.data);
+            setSuccess("Coupon Applied!");
           })
           .catch((err) => {
             console.log(err.message);
@@ -89,6 +119,7 @@ const Checkout = () => {
         );
       })
       .catch((err) => {
+        deleteCoupon();
         setError(err.response.data.message);
         console.log(err.response.data.message);
       });
@@ -106,13 +137,13 @@ const Checkout = () => {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <Link href="#">Order</Link>
+                <Link to="#">Order</Link>
               </li>
               <li className="breadcrumb-item">
-                <Link href="#">Cart</Link>
+                <Link to="/cart">Cart</Link>
               </li>
               <li className="breadcrumb-item">
-                <Link href="#">Shipping Address</Link>
+                <Link to="/shipping">Shipping Address</Link>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
                 Checkout
@@ -121,57 +152,86 @@ const Checkout = () => {
           </nav>
           <div className="container">
             <div className="row">
-              <div className="col-md-8">
+              <div className="col-md-6">
                 <div className="card mb-5" style={{ height: "auto" }}>
                   <div className="card-header">Shipping Details</div>
                   <div className="card-body">{shippinDetails()}</div>
                 </div>
               </div>
-              <div className="col-md-4">
-                <div className="card" style={{ height: "auto" }}>
+              <div className="col-md-6">
+                <div className="card mb-3" style={{ height: "auto" }}>
                   <div className="card-body">
                     <ul className="list-group list-group-flush">
                       {orderItems.map((item) => (
-                        <li
-                          key={item._id}
-                          className="list-group-item"
-                          align="right"
-                        >
-                          {item.product ? item.product.name : ""} x {item.count}{" "}
-                          = ৳ {item.price * item.count}{" "}
+                        <li key={item._id} className="list-group-item">
+                          <span className="float-start">
+                            {item.product ? item.product.name : ""}
+                          </span>
+
+                          <span className="float-end">
+                            x {item.count} = ৳ {item.price * item.count}
+                          </span>
                         </li>
                       ))}
                     </ul>
                   </div>
-
-                  <div className="card-footer" align="right">
-                    <span className="float-left">
+                  <div className="card-footer">
+                    <span className="float-start">
                       <b>Order Total </b>
                     </span>
-                    <span className="float-right">
+                    <span className="float-end">
                       <b>৳ {cartTotal}</b>
                     </span>
                   </div>
-                  <div>
-                    <div align="left">Discount Code</div>
-                    <div align="right">
+                </div>
+
+                <div className="card" style={{ height: "auto" }}>
+                  <div className="card-body">
+                    <div className="mb-2 w-100">
+                      <label
+                        htmlFor="coupon"
+                        className="form-label"
+                        style={{ fontWeight: "bold" }}
+                      >
+                        Discount Coupon
+                      </label>
                       <input
+                        id="coupon"
+                        className="form-control"
                         value={code}
                         type="text"
                         name="code"
-                        placeholder="Write Discount Code!"
+                        placeholder="Write Discount Code..."
                         onChange={(e) => handleChangeCode(e)}
                       />
+
+                      <button
+                        className="btn btn-primary mt-3"
+                        onClick={getDiscount}
+                        style={{ textAlign: "center" }}
+                      >
+                        Apply Coupon
+                      </button>
+
+                      {error ? (
+                        <p className="text-danger mt-3"> {error} </p>
+                      ) : (
+                        ""
+                      )}
+                      {success ? (
+                        <p className="text-success mt-3">{success}</p>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
-                  <button style={{ marginLeft: 5 }} onClick={getDiscount}>
-                    Apply Code
-                  </button>
+
                   <div className="card-footer" align="right">
-                    <span align="left"> Amount To Be Paid</span>
-                    <span align="right">
-                      {" "}
-                      {discountPrice ? discountPrice : cartTotal}
+                    <span className="float-start">
+                      <b>Amount To Be Paid </b>
+                    </span>
+                    <span className="float-end">
+                      <b>৳ {discountPrice ? discountPrice : cartTotal}</b>
                     </span>
                   </div>
                 </div>
@@ -187,7 +247,9 @@ const Checkout = () => {
         </Layout>
       </>
     );
-  else return <>{navigate("/cart")}</>;
+  else {
+    return <></>;
+  }
 };
 
 export default Checkout;

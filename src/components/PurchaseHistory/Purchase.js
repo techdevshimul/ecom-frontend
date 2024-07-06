@@ -26,7 +26,7 @@ const Purchase = ({ purchase, serial }) => {
     <div
       style={{
         padding: 5,
-        border: "1px solid grey",
+        border: "1px solid #ced4da",
         margin: 10,
         fontSize: 12,
         borderRadius: 5,
@@ -38,7 +38,7 @@ const Purchase = ({ purchase, serial }) => {
       <div
         style={{
           padding: 5,
-          border: "1px solid grey",
+          border: "1px solid #ced4da",
           margin: 2,
           borderRadius: 5,
         }}
@@ -91,7 +91,7 @@ const Purchase = ({ purchase, serial }) => {
         <div
           style={{
             padding: 5,
-            border: "1px solid grey",
+            border: "1px solid #ced4da",
             width: "50%",
             borderRadius: 5,
           }}
@@ -132,7 +132,7 @@ const Purchase = ({ purchase, serial }) => {
         <div
           style={{
             padding: 5,
-            border: "1px solid grey",
+            border: "1px solid #ced4da",
             width: "50%",
             borderRadius: 5,
           }}

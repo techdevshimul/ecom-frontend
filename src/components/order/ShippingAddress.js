@@ -14,7 +14,6 @@ const ShippingAddress = () => {
     country: "",
   });
   const [disabled, setDisabled] = useState(false);
-  const [redirect, setRedirect] = useState(false);
 
   const { phone, address1, address2, city, postcode, country } = values;
 
@@ -22,7 +21,34 @@ const ShippingAddress = () => {
 
   useEffect(() => {
     getProfile(userInfo().token)
-      .then((response) => setValues(response.data))
+      .then((response) => {
+        let newValues = {};
+        response.data.address1
+          ? (newValues.address1 = response.data.address1)
+          : (newValues.address1 = "");
+
+        response.data.address2
+          ? (newValues.address2 = response.data.address2)
+          : (newValues.address2 = "");
+
+        response.data.phone
+          ? (newValues.phone = response.data.phone)
+          : (newValues.phone = "");
+
+        response.data.city
+          ? (newValues.city = response.data.city)
+          : (newValues.city = "");
+
+        response.data.postcode
+          ? (newValues.postcode = response.data.postcode)
+          : (newValues.postcode = "");
+
+        response.data.country
+          ? (newValues.country = response.data.country)
+          : (newValues.country = "");
+
+        setValues(newValues);
+      })
       .catch((err) => {});
   }, []);
 
@@ -39,7 +65,7 @@ const ShippingAddress = () => {
     updateProfile(userInfo().token, values)
       .then((response) => {
         if (response.status === 200) {
-          setRedirect(true);
+          navigate("/checkout");
         }
       })
       .catch((err) => setDisabled(false));
@@ -121,14 +147,13 @@ const ShippingAddress = () => {
         description="Complete your order!"
         className="container"
       >
-        {redirect ? navigate("/checkout") : ""}
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
               <Link href="#">Order</Link>
             </li>
             <li className="breadcrumb-item">
-              <Link href="#">Cart</Link>
+              <Link to="/cart">Cart</Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               Shipping Address

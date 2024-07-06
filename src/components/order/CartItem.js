@@ -5,7 +5,7 @@ const CartItem = ({ item, serial, increaseItem, decreaseItem, removeItem }) => {
   return (
     <tr>
       <th scope="row">{serial}</th>
-      <th>
+      <th style={{ textAlign: "center" }}>
         <img
           src={`${API}/product/photo/${item.product._id}`}
           alt={item.product.name}
@@ -13,7 +13,7 @@ const CartItem = ({ item, serial, increaseItem, decreaseItem, removeItem }) => {
         />
       </th>
       <td>{item.product ? item.product.name : ""}</td>
-      <td>
+      <td style={{ textAlign: "center" }}>
         <button
           className="btn btn-outline-primary btn-sm"
           onClick={decreaseItem}
@@ -28,8 +28,8 @@ const CartItem = ({ item, serial, increaseItem, decreaseItem, removeItem }) => {
           +
         </button>
       </td>
-      <td align="right">৳ {item.price * item.count} </td>
-      <td>
+      <td style={{ textAlign: "right" }}>৳ {item.price * item.count} </td>
+      <td style={{ textAlign: "center" }}>
         <button className="btn btn-danger btn-sm" onClick={removeItem}>
           Remove From Cart
         </button>

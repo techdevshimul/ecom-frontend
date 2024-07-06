@@ -12,3 +12,11 @@ export const createDiscountPercentageAPI = (token, data) => {
     }
   );
 };
+
+export const deleteDiscountPercentageAPI = (token) => {
+  return axios.delete(`${API}/discountpercentage`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

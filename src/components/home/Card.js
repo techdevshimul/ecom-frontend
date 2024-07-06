@@ -46,7 +46,7 @@ const Card = ({ product, handleAddToCart }) => {
             )}
           </p>
           <Link to={`/product/${product._id}`}>
-            <button className="btn btn-outline-warning btn-sm">
+            <button className="btn btn-outline-warning btn-sm m-2">
               View Product
             </button>
           </Link>
@@ -55,7 +55,7 @@ const Card = ({ product, handleAddToCart }) => {
               &nbsp;
               <button
                 onClick={handleAddToCart}
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-primary btn-sm m-2"
               >
                 Add to Cart
               </button>
