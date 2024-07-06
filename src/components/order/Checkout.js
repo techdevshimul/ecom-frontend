@@ -3,6 +3,8 @@ import { getCartItems, getProfile } from "../../api/apiOrder";
 import { userInfo } from "../../utils/auth";
 import Layout from "../Layout";
 import { Link, useNavigate } from "react-router-dom";
+import { getDiscountAPI } from "../../api/apiDiscount";
+import Payment from "./Payment";
 
 const Checkout = () => {
   const [orderItems, setOrderItems] = useState([]);
@@ -14,6 +16,10 @@ const Checkout = () => {
     postcode: "",
     country: "",
   });
+  const [code, setCode] = useState("");
+  const [discountPrice, setDiscountPrice] = useState();
+  const [cartTotal, setCartTotal] = useState();
+  const [error, setError] = useState(false);
 
   const { phone, address1, address2, city, postcode, country } = values;
 
@@ -21,20 +27,26 @@ const Checkout = () => {
 
   const loadCart = () => {
     getCartItems(userInfo().token)
-      .then((response) => setOrderItems(response.data))
+      .then((response) => {
+        getOrderTotal(response.data);
+        setOrderItems(response.data);
+      })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     getProfile(userInfo().token)
-      .then((response) => setValues(response.data))
+      .then((response) => {
+        setValues(response.data);
+      })
       .catch((err) => {});
     loadCart();
   }, []);
 
-  const getOrderTotal = () => {
-    const arr = orderItems.map((cartItem) => cartItem.price * cartItem.count);
+  const getOrderTotal = (cartItems) => {
+    const arr = cartItems.map((cartItem) => cartItem.price * cartItem.count);
     const sum = arr.reduce((a, b) => a + b, 0);
+    setCartTotal(sum);
     return sum;
   };
 
@@ -55,6 +67,29 @@ const Checkout = () => {
       <br /> {city}-{postcode}, {country}
     </>
   );
+
+  const handleChangeCode = (e) => {
+    setCode(e.target.value);
+  };
+
+  const getDiscount = () => {
+    getDiscountAPI(userInfo().token, code)
+      .then((response) => {
+        console.log(response.data.percentage);
+        setDiscountPrice(
+          cartTotal - (cartTotal * response.data.percentage) / 100
+        );
+      })
+      .catch((err) => {
+        setError(err.response.data.message);
+        console.log(err.response.data.message);
+      });
+    setCode("");
+  };
+
+  const handlePaymentClick = () => {
+    navigate("/payment", { state: { discountPrice } });
+  };
 
   if (address1 && city && phone && postcode && country)
     return (
@@ -104,21 +139,51 @@ const Checkout = () => {
                       ))}
                     </ul>
                   </div>
-                  <div className="card-footer">
+
+                  <div className="card-footer" align="right">
                     <span className="float-left">
-                      <b>Order Total</b>
+                      <b>Order Total </b>
                     </span>
                     <span className="float-right">
-                      <b>৳ {getOrderTotal()}</b>
+                      <b>৳ {cartTotal}</b>
+                    </span>
+                  </div>
+                  <div>
+                    <div align="left">Discount Code</div>
+                    <div align="right">
+                      <input
+                        value={code}
+                        type="text"
+                        name="code"
+                        placeholder="Write Discount Code!"
+                        onChange={(e) => handleChangeCode(e)}
+                      />
+                    </div>
+                  </div>
+                  <button style={{ marginLeft: 5 }} onClick={getDiscount}>
+                    Apply Code
+                  </button>
+                  <div className="card-footer" align="right">
+                    <span align="left"> Amount To Be Paid</span>
+                    <span align="right">
+                      {" "}
+                      {discountPrice ? discountPrice : cartTotal}
                     </span>
                   </div>
                 </div>
                 <br />
-                <p>
+                {/* <p>
                   <Link className="btn btn-warning btn-md" to="/payment">
                     Make Payment
                   </Link>
-                </p>
+                </p> */}
+
+                <button
+                  className="btn btn-warning btn-md"
+                  onClick={handlePaymentClick}
+                >
+                  Make Payment
+                </button>
               </div>
             </div>
           </div>

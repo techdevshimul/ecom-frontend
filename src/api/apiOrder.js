@@ -52,8 +52,8 @@ export const updateProfile = (token, data) => {
   });
 };
 
-export const initPayment = (token) => {
-  return axios.get(`${API}/payment`, {
+export const initPayment = (token, discountPrice) => {
+  return axios.get(`${API}/payment?discount=${discountPrice}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

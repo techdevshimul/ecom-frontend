@@ -13,6 +13,7 @@ import Cart from "./order/Cart";
 import ShippingAddress from "./order/ShippingAddress";
 import Checkout from "./order/Checkout";
 import Payment from "./order/Payment";
+import CreateDiscount from "./admin/CreateDiscount";
 
 const Main = () => {
   return (
@@ -87,6 +88,14 @@ const Main = () => {
           element={
             <AdminRoute>
               <CreateProduct />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/create/discount"
+          element={
+            <AdminRoute>
+              <CreateDiscount />
             </AdminRoute>
           }
         />

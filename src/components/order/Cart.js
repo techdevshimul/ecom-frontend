@@ -14,11 +14,14 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [code, setCode] = useState("");
+  const [cartTotal, setCartTotal] = useState();
 
   const loadCart = () => {
     getCartItems(userInfo().token)
-      .then((response) => setCartItems(response.data))
+      .then((response) => {
+        setCartItems(response.data);
+        getCartTotal(response.data);
+      })
       .catch((err) => {
         if (err.response) setError(err.response.data);
         else setError("Loading Cart Failed!");
@@ -61,29 +64,23 @@ const Cart = () => {
       });
   };
 
-  const getCartTotal = () => {
-    const arr = cartItems.map((item) => item.price * item.count);
+  const getCartTotal = (latestCartItems) => {
+    const arr = latestCartItems.map((item) => item.price * item.count);
     const sum = arr.reduce((a, b) => a + b, 0);
+    setCartTotal(sum);
     return sum;
   };
 
   const removeItem = (item) => () => {
     if (!window.confirm("Delete Item?")) return;
     deletCartItem(userInfo().token, item)
-      .then((response) => loadCart())
+      .then((response) => {
+        loadCart();
+      })
       .catch((err) => {
         if (err.response) setError(err.response.data);
         else setError("Deleting Item Failed!");
       });
-  };
-
-  const getDiscount = () => {
-    console.log(code);
-    setCode("");
-  };
-
-  const handleChangeCode = (e) => {
-    setCode(e.target.value);
   };
 
   return (
@@ -139,36 +136,10 @@ const Cart = () => {
               <td colSpan={3} align="right">
                 Cart Total
               </td>
-              <td align="right">৳ {getCartTotal()} </td>
+              <td align="right">৳ {cartTotal} </td>
               <td />
             </tr>
-            <tr>
-              <th scope="row" />
-              <td colSpan={3} align="right">
-                Discount Code
-              </td>
-              <td align="right">
-                <input
-                  value={code}
-                  type="text"
-                  name="code"
-                  placeholder="Write Discount Code!"
-                  onChange={(e) => handleChangeCode(e)}
-                />
-                <button style={{ marginLeft: 5 }} onClick={getDiscount}>
-                  Apply Code
-                </button>
-              </td>
-              <td />
-            </tr>
-            <tr>
-              <th scope="row" />
-              <td colSpan={3} align="right">
-                Amount To Be Paid
-              </td>
-              <td align="right">৳ {getCartTotal()} </td>
-              <td />
-            </tr>
+
             <tr>
               <th scope="row" />
               <td colSpan={5} className="text-right">
