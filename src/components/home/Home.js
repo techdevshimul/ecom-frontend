@@ -6,7 +6,6 @@ import {
   getCategories,
   getProducts,
   getFilteredProducts,
-  getProductBySearch,
 } from "../../api/apiProduct";
 import CheckBox from "./CheckBox";
 import RadioBox from "./RadioBox";
@@ -208,6 +207,7 @@ const Home = () => {
     getFilteredProducts(skip, limit, filters, order, sortBy)
       .then((response) => {
         setProducts([...products, ...response.data]);
+        console.log(response.data);
         if (response.data.length === 0) {
           setToggleSkipButton(true);
           setSkip(limit);
@@ -220,9 +220,7 @@ const Home = () => {
         setError("Failed To Load Products!");
       });
 
-    const newSkip = skip + limit;
-
-    setSkip(newSkip);
+    setSkip(skip + limit);
   };
 
   const search = () => {

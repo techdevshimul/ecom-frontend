@@ -5,6 +5,7 @@ import Layout from "../Layout";
 import { Link, useNavigate } from "react-router-dom";
 import { getDiscountAPI } from "../../api/apiDiscount";
 import Payment from "./Payment";
+import { createDiscountPercentageAPI } from "../../api/apiDiscountPercentage";
 
 const Checkout = () => {
   const [orderItems, setOrderItems] = useState([]);
@@ -76,6 +77,13 @@ const Checkout = () => {
     getDiscountAPI(userInfo().token, code)
       .then((response) => {
         console.log(response.data.percentage);
+        createDiscountPercentageAPI(userInfo().token, response.data.percentage)
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
         setDiscountPrice(
           cartTotal - (cartTotal * response.data.percentage) / 100
         );
@@ -85,10 +93,6 @@ const Checkout = () => {
         console.log(err.response.data.message);
       });
     setCode("");
-  };
-
-  const handlePaymentClick = () => {
-    navigate("/payment", { state: { discountPrice } });
   };
 
   if (address1 && city && phone && postcode && country)
@@ -172,18 +176,11 @@ const Checkout = () => {
                   </div>
                 </div>
                 <br />
-                {/* <p>
+                <p>
                   <Link className="btn btn-warning btn-md" to="/payment">
                     Make Payment
                   </Link>
-                </p> */}
-
-                <button
-                  className="btn btn-warning btn-md"
-                  onClick={handlePaymentClick}
-                >
-                  Make Payment
-                </button>
+                </p>
               </div>
             </div>
           </div>

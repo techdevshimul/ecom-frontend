@@ -10,10 +10,9 @@ const Payment = () => {
   const [redirectUrl, setRedirectUrl] = useState("");
 
   const location = useLocation();
-  const { discountPrice } = location.state || {};
 
   useEffect(() => {
-    initPayment(userInfo().token, discountPrice)
+    initPayment(userInfo().token)
       .then((response) => {
         if (response.data.status === "SUCCESS") {
           setSessionSuccess(true);
