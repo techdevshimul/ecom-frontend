@@ -77,13 +77,22 @@ const ProductDetails = (props) => {
           {showSuccess(success, "Item Added to Cart!")}
           {showError(error, error)}
         </div>
-        <div className="row container">
+        <div
+          className="row container mb-3"
+          style={{
+            border: "1px solid #ced4da",
+            borderRadius: ".5rem",
+            margin: 5,
+            padding: 5,
+          }}
+        >
           <div className="col-6">
             {product && product._id ? (
               <img
                 src={`${API}/product/photo/${product._id}`}
                 alt={product.name}
                 width="100%"
+                style={{ maxHeight: "400px", objectFit: "cover" }}
               />
             ) : (
               ""
@@ -91,8 +100,12 @@ const ProductDetails = (props) => {
           </div>
           <div className="col-6">
             <h3>{product.name}</h3>
-            <span style={{ fontSize: 20 }}>&#2547;</span>
-            {product.price}
+            <p>
+              <span>
+                <b>Price : </b>&#2547;&nbsp;
+              </span>
+              {product.price}
+            </p>
             <p>
               {product.quantity ? (
                 <span className="badge rounded-pill bg-primary">In Stock</span>
@@ -103,12 +116,22 @@ const ProductDetails = (props) => {
               )}
             </p>
             <p>
-              <span style={{ fontWeight: "bold" }}>Rating :</span>&nbsp;
-              {totalRating !== 0 && totalRating !== undefined
-                ? totalRating.toFixed(2) + " Out Of 5.00"
-                : "Not Rated Yet!"}
+              <b>Sold : </b>
+              <span>{product.sold} Items Sold.</span>
             </p>
-            <p>{product.description}</p>
+            <p>
+              <b>Rating : </b>
+              <span>
+                {totalRating !== 0 && totalRating !== undefined
+                  ? totalRating.toFixed(2) + " Out Of 5.00."
+                  : "Not Rated Yet!"}
+              </span>
+            </p>
+            <p>
+              <b>Description : </b>
+              {product.description}
+            </p>
+
             {product.quantity ? (
               <>
                 &nbsp;

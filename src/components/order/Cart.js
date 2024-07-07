@@ -159,9 +159,13 @@ const Cart = () => {
                         Continue Shoping
                       </button>
                     </Link>
-                    <Link to="/shipping" className="btn btn-success me-4">
-                      Proceed To Checkout
-                    </Link>
+                    {cartTotal ? (
+                      <Link to="/shipping" className="btn btn-success me-4">
+                        Proceed To Checkout
+                      </Link>
+                    ) : (
+                      ""
+                    )}
                   </td>
                 </tr>
               </tbody>

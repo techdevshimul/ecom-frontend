@@ -16,8 +16,9 @@ const Card = ({ product, handleAddToCart }) => {
     objectFit: "cover",
     objectPosition: "0px 0px",
   };
+
   return (
-    <div className="col-md-3 col-sm-4 col-xs-12 mb-3">
+    <div className="col-md-6 col-xs-12 col-lg-4 col-xl-3 mb-3">
       <div className="card">
         {product && product._id ? (
           <img
@@ -34,16 +35,30 @@ const Card = ({ product, handleAddToCart }) => {
           <div style={{ minHeight: "3em" }}>
             <p style={titleStyle}>{product.name}</p>
           </div>
-          <span style={{ fontSize: 20 }}>&#2547;</span>
-          {product.price}
+          <p>
+            <span>
+              <b>Price : </b>&#2547;&nbsp;
+            </span>
+            {product.price}
+          </p>
           <p>
             {product.quantity ? (
-              <span className="badge badge-pill badge-primary">In Stock</span>
+              <span className="badge rounded-pill bg-primary">In Stock</span>
             ) : (
-              <span className="badge badge-pill badge-danger">
-                Out of Stock
-              </span>
+              <span className="badge rounded-pill bg-danger">Out of Stock</span>
             )}
+          </p>
+          <p>
+            <b>Sold : </b>
+            <span>{product.sold} Items Sold.</span>
+          </p>
+          <p>
+            <b>Rating : </b>
+            <span>
+              {product.total_rating !== 0 && product.total_rating !== undefined
+                ? product.total_rating.toFixed(2) + " Out Of 5.00."
+                : "Not Rated Yet!"}
+            </span>
           </p>
           <Link to={`/product/${product._id}`}>
             <button className="btn btn-outline-warning btn-sm m-2">

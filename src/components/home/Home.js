@@ -154,55 +154,93 @@ const Home = () => {
         }}
       >
         <div className="row">
-          <div className="col-sm-3">
-            <h5>Filter By Categories: </h5>
-            <ul>
-              <CheckBox
-                handleFilters={(myFilters) =>
-                  handleFilters(myFilters, "category")
-                }
-                categories={categories}
-              />
-            </ul>
-          </div>
-
-          <div className="col-sm-5">
-            <h5>Filter By Price :</h5>
-            <div className="row">
-              <RadioBox
-                prices={prices}
-                handleFilters={(myFilters) => handleFilters(myFilters, "price")}
-              />
+          <div className="col-lg-3 col-md-6">
+            <div
+              style={{
+                padding: 10,
+                border: "1px solid #ced4da",
+                borderRadius: ".5rem",
+                marginBottom: 10,
+              }}
+            >
+              <h5>Filter By Categories: </h5>
+              <ul className="p-0">
+                <CheckBox
+                  handleFilters={(myFilters) =>
+                    handleFilters(myFilters, "category")
+                  }
+                  categories={categories}
+                />
+              </ul>
             </div>
           </div>
 
-          <div className="col-sm-2">
-            <h5>Item Order :</h5>
-            <div>
-              <select
-                className="form-select"
-                value={order}
-                onChange={handleChangeOrder}
-              >
-                <option value="ascending">Ascending</option>
-                <option value="descending">Descending</option>
-              </select>
+          <div className="col-lg-5 col-md-6">
+            <div
+              style={{
+                padding: 10,
+                border: "1px solid #ced4da",
+                marginBottom: 10,
+                borderRadius: ".5rem",
+                minHeight: 165,
+              }}
+            >
+              <h5>Filter By Price :</h5>
+              <div className="row">
+                <RadioBox
+                  prices={prices}
+                  handleFilters={(myFilters) =>
+                    handleFilters(myFilters, "price")
+                  }
+                />
+              </div>
             </div>
           </div>
 
-          <div className="col-sm-2">
-            <h5>Sort By :</h5>
-            <div>
-              <select
-                className="form-select"
-                value={sortBy}
-                onChange={handleChangeSortBy}
-              >
-                <option value="price">Price</option>
-                <option value="sold">Sold</option>
-                <option value="total_rating">Review</option>
-                <option value="createdAt">Created</option>
-              </select>
+          <div className="col-lg-2 col-md-6">
+            <div
+              style={{
+                padding: 10,
+                border: "1px solid #ced4da",
+                marginBottom: 10,
+                borderRadius: ".5rem",
+              }}
+            >
+              <h5>Order :</h5>
+              <div>
+                <select
+                  className="form-select"
+                  value={order}
+                  onChange={handleChangeOrder}
+                >
+                  <option value="ascending">Ascending</option>
+                  <option value="descending">Descending</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-2 col-md-6">
+            <div
+              style={{
+                padding: 10,
+                border: "1px solid #ced4da",
+                borderRadius: ".5rem",
+              }}
+            >
+              <h5>Sort By :</h5>
+              <div>
+                <select
+                  className="form-select"
+                  value={sortBy}
+                  onChange={handleChangeSortBy}
+                >
+                  <option value="price">Price</option>
+                  <option value="sold">Sold</option>
+                  <option value="total_rating">Review</option>
+                  <option value="createdAt">Created</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -238,12 +276,12 @@ const Home = () => {
 
   const search = () => {
     return (
-      <form className="col-12 col-lg-auto mb-3 mb-lg-0">
+      <form className="col-12 col-lg-auto mb-2 mb-lg-0">
         <input
           value={query}
           onChange={(e) => handleFilters(e.target.value, "name")}
           type="search"
-          className="form-control my-2"
+          className="form-control my-1"
           placeholder="Search for a product..."
         />
       </form>
