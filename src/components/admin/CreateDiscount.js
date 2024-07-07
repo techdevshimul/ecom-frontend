@@ -90,7 +90,6 @@ const CreateDiscount = () => {
             type="number"
             onChange={handleChange}
             value={percentage}
-            autoFocus
             required
             className="form-control"
           />

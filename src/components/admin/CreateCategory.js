@@ -27,10 +27,10 @@ const CreateCategory = () => {
     createCategory(token, { name: name })
       .then((response) => {
         setValues({
-          ...values,
           error: false,
           success: true,
           loading: false,
+          name: "",
         });
       })
       .catch((err) => {

@@ -32,10 +32,14 @@ const Checkout = () => {
   const loadCart = () => {
     getCartItems(userInfo().token)
       .then((response) => {
-        getOrderTotal(response.data);
-        setOrderItems(response.data);
+        if (response.data.length > 0) {
+          getOrderTotal(response.data);
+          setOrderItems(response.data);
+        } else navigate("/cart");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   const deleteCoupon = () => {
