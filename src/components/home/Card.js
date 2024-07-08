@@ -53,6 +53,10 @@ const Card = ({ product, handleAddToCart }) => {
             <span>{product.sold} Items Sold.</span>
           </p>
           <p>
+            <b>Category : </b>
+            <span>{product.category.name}</span>
+          </p>
+          <p>
             <b>Rating : </b>
             <span>
               {product.total_rating !== 0 && product.total_rating !== undefined
@@ -60,6 +64,7 @@ const Card = ({ product, handleAddToCart }) => {
                 : "Not Rated Yet!"}
             </span>
           </p>
+
           <Link to={`/product/${product._id}`}>
             <button className="btn btn-outline-warning btn-sm m-2">
               View Product

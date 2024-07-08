@@ -120,6 +120,10 @@ const ProductDetails = (props) => {
               <span>{product.sold} Items Sold.</span>
             </p>
             <p>
+              <b>Category : </b>
+              <span>{product.category && product.category.name}</span>
+            </p>
+            <p>
               <b>Rating : </b>
               <span>
                 {totalRating !== 0 && totalRating !== undefined
