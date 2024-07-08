@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PurchaseCart from "./PurchaseCart/PurchaseCart";
 import { getTransactionHistory } from "../../api/apiPurchase";
 import { userInfo } from "../../utils/auth";
+import dateFormat from "dateformat";
 
 const Purchase = ({ purchase, serial }) => {
   const [transaction_data, setTransaction_data] = useState([]);
@@ -21,6 +22,15 @@ const Purchase = ({ purchase, serial }) => {
         else setError("Loading History Failed!");
       });
   }, []);
+
+  const bdTime = () => {
+    const transactionDate = new Date(transaction_data[0].tran_date);
+    const bdDate = new Date(
+      transactionDate.setHours(transactionDate.getHours() - 6)
+    );
+
+    return dateFormat(bdDate, "dS mmmm yyyy, h:MM TT");
+  };
 
   return (
     <div
@@ -158,9 +168,7 @@ const Purchase = ({ purchase, serial }) => {
           </p>
           <p>
             <span style={{ fontWeight: "bold" }}>Transaction Date : </span>
-            {transaction_data.length != 0
-              ? transaction_data[0].tran_date
-              : "N/A"}
+            {transaction_data.length != 0 ? <span>{bdTime()}</span> : "N/A"}
           </p>
           <p>
             <span style={{ fontWeight: "bold" }}>Transaction Status : </span>

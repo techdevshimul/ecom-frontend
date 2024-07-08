@@ -1,4 +1,4 @@
-import React from "react";
+import dateFormat from "dateformat";
 
 const Review = ({ review }) => {
   return (
@@ -13,7 +13,9 @@ const Review = ({ review }) => {
       <p>Name : {review.name}</p>
       <p>Comment : {review.comment}</p>
       <p>Rating : {review.rating}</p>
-      <p>Commneted On : {review.updatedAt}</p>
+      <p>
+        Commneted On : {dateFormat(review.updatedAt, "dS mmmm yyyy, h:MM TT")}
+      </p>
     </div>
   );
 };
