@@ -159,7 +159,7 @@ const Reviews = ({ productId, setTotalRatingFunc }) => {
                   className="btn btn-outline-primary"
                   disabled={disabled}
                 >
-                  Submit Comment
+                  Submit Review
                 </button>
               </form>
             </div>

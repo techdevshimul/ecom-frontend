@@ -276,22 +276,20 @@ const Home = () => {
 
   const search = () => {
     return (
-      <form className="col-12 col-lg-auto mb-2 mb-lg-0">
-        <input
-          value={query}
-          onChange={(e) => handleFilters(e.target.value, "name")}
-          type="search"
-          className="form-control my-1"
-          placeholder="Search for a product..."
-        />
-      </form>
+      <input
+        value={query}
+        onChange={(e) => handleFilters(e.target.value, "name")}
+        type="search"
+        className="form-control my-1"
+        placeholder="Search for a product..."
+      />
     );
   };
 
   return (
     <Layout title="Home Page" className="container-fluid">
       <div className="container">
-        {search()}
+        <div className="col-12 col-lg-auto mb-2 mb-lg-2">{search()}</div>
 
         {categories && showFilters()}
         <div style={{ width: "100%" }}>
