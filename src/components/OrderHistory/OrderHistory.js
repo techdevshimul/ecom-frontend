@@ -4,6 +4,7 @@ import { deleteOrderHistory, getOrderHistory } from "../../api/apiOrderHistory";
 import Order from "./Order";
 import { Link } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/messages";
+import { initPaymentOfCurrentOrders } from "../../api/apiOrder";
 
 const OrderHistory = () => {
   const [orderHistory, setOrderHistory] = useState();
@@ -19,6 +20,18 @@ const OrderHistory = () => {
       })
       .catch((err) => {
         console.log(err.message);
+      });
+  };
+
+  const makePaymentOfCurrentOrder = (orderId) => {
+    initPaymentOfCurrentOrders(userInfo().token, orderId)
+      .then((response) => {
+        if (response.data.status === "SUCCESS") {
+          window.location = response.data.GatewayPageURL;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -49,6 +62,9 @@ const OrderHistory = () => {
               key={order._id}
               serial={i + 1}
               deleteCurrentOrder={(id) => deleteCurrentOrder(id)}
+              makePayment={(orderId) => {
+                makePaymentOfCurrentOrder(orderId);
+              }}
             />
           );
         })

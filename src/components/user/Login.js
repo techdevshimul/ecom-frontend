@@ -26,7 +26,7 @@ const Login = () => {
       console.log("Received token:", token);
       // Save the token to local storage or handle it as needed
       localStorage.setItem("jwt", JSON.stringify(token));
-      window.location.reload();
+      window.location = "/user/dashboard";
     }
   }, []);
 

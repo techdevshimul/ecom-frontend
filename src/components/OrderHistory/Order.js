@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import PurchaseCart from "../PurchaseHistory/PurchaseCart/PurchaseCart";
-import { Link } from "react-router-dom";
-import { deleteOrderHistory } from "../../api/apiOrderHistory";
-import { userInfo } from "../../utils/auth";
 
-const Order = ({ order, serial, deleteCurrentOrder }) => {
-  const [error, setError] = useState();
+const Order = ({ order, serial, deleteCurrentOrder, makePayment }) => {
+  const [paymentProccessing, setPaymentProccessing] = useState();
 
   const deleteOrder = () => {
     deleteCurrentOrder(order._id);
+  };
+
+  const makeNewPayment = () => {
+    setPaymentProccessing("Payment Is Proccessing! Please Wait...");
+    makePayment(order._id);
   };
 
   const getCartTotal = () => {
@@ -142,9 +144,15 @@ const Order = ({ order, serial, deleteCurrentOrder }) => {
           </p>
 
           <p>
-            <Link className="btn btn-warning btn-md" to={order.gateWayURL}>
+            <button className="btn btn-warning btn-md" onClick={makeNewPayment}>
               Make Payment
-            </Link>
+            </button>
+          </p>
+          <p
+            className="text-primary"
+            style={{ fontWeight: "bold", fontSize: 14, textAlign: "center" }}
+          >
+            {paymentProccessing}
           </p>
           <p>
             <button className="btn btn-danger btn-md" onClick={deleteOrder}>

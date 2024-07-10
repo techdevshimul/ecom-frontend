@@ -13,7 +13,11 @@ import Cart from "./order/Cart";
 import ShippingAddress from "./order/ShippingAddress";
 import Checkout from "./order/Checkout";
 import Payment from "./order/Payment";
+import PaymentCurrentOrder from "./order/PaymentCurrentOrder";
 import CreateDiscount from "./admin/CreateDiscount";
+import Success from "../utils/Success";
+import Fail from "../utils/Fail";
+import Cancel from "../utils/Cancel";
 
 const Main = () => {
   return (
@@ -23,6 +27,10 @@ const Main = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/fail" element={<Fail />} />
+        <Route path="/cancel" element={<Cancel />} />
+
         <Route
           path="/user/dashboard"
           element={
@@ -54,6 +62,15 @@ const Main = () => {
           element={
             <PrivateRoute>
               <Payment />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/payment/currentorder"
+          element={
+            <PrivateRoute>
+              <PaymentCurrentOrder />
             </PrivateRoute>
           }
         />
