@@ -30,16 +30,20 @@ const Login = () => {
     }
   }, []);
 
+  const loginWithGoogle = () => {
+    window.open(`${API}/auth/google`, "_self");
+  };
+
+  const loginWithFacebook = () => {
+    window.open(`${API}/auth/facebook`, "_self");
+  };
+
   const handleChange = (e) => {
     setValues({
       ...values,
       error: false,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const loginWithGoogle = () => {
-    window.open(`${API}/auth/google`, "_self");
   };
 
   const handleSubmit = (e) => {
@@ -134,39 +138,44 @@ const Login = () => {
       {showError(error, error)}
       <h3>Login Here</h3>
       <hr />
-      {signInForm()}
+      <button
+        onClick={loginWithGoogle}
+        className="btn btn-outline-success w-100"
+      >
+        <img
+          style={{ width: "30px", marginRight: "10px" }}
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png"
+        />
+        Login With Google
+      </button>
+      <br />
+      <br />
+      <button
+        onClick={loginWithFacebook}
+        className="btn btn-outline-primary w-100"
+      >
+        <img
+          style={{ width: "30px", marginRight: "10px" }}
+          src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg"
+        />
+        Login With Facebook
+      </button>
+      <hr />
+      <p style={{ fontSize: 25, textAlign: "center" }}>Or</p>
+
       <hr />
 
-      <button onClick={loginWithGoogle}>Sign In With Google</button>
-
-      <a href="http://localhost:3001/api/auth/google/">
-        <div className="google-btn">
-          <div className="google-icon-wrapper">
-            <img
-              className="google-icon"
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png"
-            />
-          </div>
-          <p className="btn-text">
-            <b>Sign in with google</b>
-          </p>
-        </div>
-      </a>
-      <br />
-
-      <a href="http://localhost:3001/api/auth/facebook/">
-        <div className="google-btn">
-          <div className="google-icon-wrapper">
-            <img
-              className="google-icon"
-              src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg"
-            />
-          </div>
-          <p className="btn-text">
-            <b>Sign in with fb</b>
-          </p>
-        </div>
-      </a>
+      <p
+        style={{
+          fontSize: 22,
+          textAlign: "center",
+          textDecoration: "underline",
+        }}
+      >
+        Login With Email & Password
+      </p>
+      {signInForm()}
+      <hr />
     </Layout>
   );
 };

@@ -16,7 +16,3 @@ export const login = (user) => {
     },
   });
 };
-
-export const loginWithGoogleAPI = () => {
-  return axios.get(`${API}/auth/google`);
-};

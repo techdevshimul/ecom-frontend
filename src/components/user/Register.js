@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../Layout";
 import { showError, showLoading } from "../../utils/messages";
 import { register } from "../../api/apiAuth";
 import { Link, Navigate } from "react-router-dom";
 import { isAuthenticated } from "../../utils/auth";
+import { API } from "../../utils/config";
 
 const Register = () => {
   const [values, setValues] = useState({
@@ -17,6 +18,26 @@ const Register = () => {
   });
 
   const { name, email, password, success, error, loading, disabled } = values;
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      console.log("Received token:", token);
+      // Save the token to local storage or handle it as needed
+      localStorage.setItem("jwt", JSON.stringify(token));
+      window.location.reload();
+    }
+  }, []);
+
+  const loginWithGoogle = () => {
+    window.open(`${API}/auth/google`, "_self");
+  };
+
+  const loginWithFacebook = () => {
+    window.open(`${API}/auth/facebook`, "_self");
+  };
 
   const handleChange = (e) => {
     setValues({
@@ -105,7 +126,11 @@ const Register = () => {
         />
       </div>
       <br />
-      <button type="submit" className="btn btn-primary" disabled={disabled}>
+      <button
+        type="submit"
+        className="btn btn-outline-primary"
+        disabled={disabled}
+      >
         Create Account
       </button>
     </form>
@@ -128,7 +153,44 @@ const Register = () => {
       {showLoading(loading)}
       {showError(error, error)}
       <h3>Register Here</h3>
+
       <hr />
+      <button
+        onClick={loginWithGoogle}
+        className="btn btn-outline-success w-100"
+      >
+        <img
+          style={{ width: "30px", marginRight: "10px" }}
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png"
+        />
+        Register With Google
+      </button>
+      <br />
+      <br />
+      <button
+        onClick={loginWithFacebook}
+        className="btn btn-outline-primary w-100"
+      >
+        <img
+          style={{ width: "30px", marginRight: "10px" }}
+          src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg"
+        />
+        Register With Facebook
+      </button>
+      <hr />
+      <p style={{ fontSize: 25, textAlign: "center" }}>Or</p>
+
+      <hr />
+
+      <p
+        style={{
+          fontSize: 22,
+          textAlign: "center",
+          textDecoration: "underline",
+        }}
+      >
+        Register With Email & Password
+      </p>
       {signUpForm()}
       <hr />
     </Layout>
