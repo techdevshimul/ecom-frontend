@@ -155,28 +155,32 @@ const Register = () => {
       <h3>Register Here</h3>
 
       <hr />
-      <button
-        onClick={loginWithGoogle}
-        className="btn btn-outline-success w-100"
-      >
-        <img
-          style={{ width: "30px", marginRight: "10px" }}
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png"
-        />
-        Register With Google
-      </button>
-      <br />
-      <br />
-      <button
-        onClick={loginWithFacebook}
-        className="btn btn-outline-primary w-100"
-      >
-        <img
-          style={{ width: "30px", marginRight: "10px" }}
-          src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg"
-        />
-        Register With Facebook
-      </button>
+      <div className="row">
+        <div className="col-lg-6 d-flex align-items-center justify-content-center">
+          <button
+            onClick={loginWithGoogle}
+            className="btn btn-outline-success w-100 m-2"
+          >
+            <img
+              style={{ width: "30px", marginRight: "10px" }}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png"
+            />
+            Register With Google
+          </button>
+        </div>
+        <div className="col-lg-6 d-flex align-items-center justify-content-center">
+          <button
+            onClick={loginWithFacebook}
+            className="btn btn-outline-primary  m-2 w-100"
+          >
+            <img
+              style={{ width: "30px", marginRight: "10px" }}
+              src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg"
+            />
+            Register With Facebook
+          </button>
+        </div>
+      </div>
       <hr />
       <p style={{ fontSize: 25, textAlign: "center" }}>Or</p>
 
