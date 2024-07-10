@@ -1,27 +1,28 @@
 import Layout from "../Layout";
 import { Link } from "react-router-dom";
 import { userInfo } from "../../utils/auth";
+import DiscountCoupons from "./DiscountCoupons";
 
 const AdminDashboard = () => {
   const { name, email, role } = userInfo();
 
   const UserLinks = () => {
     return (
-      <div className="card">
+      <div className="card m-2">
         <h4 className="card-header">User Links</h4>
         <ul className="list-group">
           <li className="list-group-item">
-            <Link className="nav-link" to="/create/category">
+            <Link style={{ textDecoration: "none" }} to="/create/category">
               Create Category
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to="/create/product">
+            <Link style={{ textDecoration: "none" }} to="/create/product">
               Create Product
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to="/create/discount">
+            <Link style={{ textDecoration: "none" }} to="/create/discount">
               Create Discount
             </Link>
           </li>
@@ -31,7 +32,7 @@ const AdminDashboard = () => {
   };
 
   const UserInfo = () => (
-    <div className="card mb-5">
+    <div className="card mb-3 m-2">
       <h3 className="card-header">User Information</h3>
       <ul className="list-group">
         <li className="list-group-item">{name}</li>
@@ -44,11 +45,17 @@ const AdminDashboard = () => {
   return (
     <Layout title="Dashboard" className="container-fluid">
       <div className="row">
-        <div className="col-sm-3">
+        <div className="col-sm-4">
           <UserLinks />
         </div>
-        <div className="col-sm-9">
+
+        <div className="col-sm-8">
           <UserInfo />
+
+          <div className="card m-2">
+            <h3 className="card-header">Discount Coupons</h3>
+            <DiscountCoupons />
+          </div>
         </div>
       </div>
     </Layout>

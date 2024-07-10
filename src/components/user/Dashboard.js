@@ -9,16 +9,16 @@ const Dashboard = () => {
 
   const UserLinks = () => {
     return (
-      <div className="card">
+      <div className="card m-2">
         <h4 className="card-header">User Links</h4>
         <ul className="list-group">
           <li className="list-group-item">
-            <Link className="nav-link" to="/cart">
+            <Link style={{ textDecoration: "none" }} to="/cart">
               My Cart
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to="#">
+            <Link style={{ textDecoration: "none" }} to="#">
               Update Profile
             </Link>
           </li>
@@ -28,21 +28,21 @@ const Dashboard = () => {
   };
 
   const PurchaseHistoryDiv = () => (
-    <div className="card mb-5">
+    <div className="card mb-3 m-2">
       <h3 className="card-header">Previous Purchase History</h3>
       {<PurchaseHistory />}
     </div>
   );
 
   const OrderHistoryDiv = () => (
-    <div className="card mb-5">
+    <div className="card mb-3 m-2">
       <h3 className="card-header">Current Orders</h3>
       {<OrderHistory />}
     </div>
   );
 
   const UserInfo = () => (
-    <div className="card mb-5">
+    <div className="card mb-3 m-2">
       <h3 className="card-header">User Information</h3>
       <ul className="list-group">
         <li className="list-group-item">{name}</li>
@@ -55,10 +55,10 @@ const Dashboard = () => {
   return (
     <Layout title="Dashboard" className="container-fluid">
       <div className="row">
-        <div className="col-sm-3">
+        <div className="col-sm-4">
           <UserLinks />
         </div>
-        <div className="col-sm-9">
+        <div className="col-sm-8">
           <UserInfo />
           <OrderHistoryDiv />
           <PurchaseHistoryDiv />

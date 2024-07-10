@@ -85,8 +85,8 @@ const CreateCategory = () => {
   };
 
   const goBack = () => (
-    <div className="mt-5">
-      <Link to="/admin/dashboard" className="text-warning">
+    <div className="mt-3">
+      <Link to="/admin/dashboard" className="text-success">
         Go to Dashboard
       </Link>
     </div>
@@ -97,13 +97,15 @@ const CreateCategory = () => {
       title="Add a new category"
       description="Ready to add a new category?"
     >
-      <div className="row">
-        <div className="col-md-8 offset-md-2">
-          {showLoading(loading)}
-          {showError(error, error)}
-          {showSuccess(success, "Category Created!")}
-          {categoryForm()}
-          {goBack()}
+      <div className="container">
+        <div className="row">
+          <div className="col-md-8 offset-md-2">
+            {showLoading(loading)}
+            {showError(error, error)}
+            {showSuccess(success, "Category Created!")}
+            {categoryForm()}
+            {goBack()}
+          </div>
         </div>
       </div>
     </Layout>

@@ -177,6 +177,7 @@ const CreateProduct = () => {
             ))}
         </select>
       </div>
+      <br />
       <button
         className="btn btn-outline-primary"
         type="submit"
@@ -188,8 +189,8 @@ const CreateProduct = () => {
   );
 
   const goBack = () => (
-    <div className="mt-5">
-      <Link to="/admin/dashboard" className="text-warning">
+    <div className="mt-3">
+      <Link to="/admin/dashboard" className="text-success">
         Go to Dashboard
       </Link>
     </div>
@@ -197,13 +198,15 @@ const CreateProduct = () => {
 
   return (
     <Layout title="Add a new product">
-      <div className="row">
-        <div className="col-md-8 offset-md-2">
-          {showError(error, error)}
-          {showLoading(loading)}
-          {showSuccess(success, "Product Added Successfully!")}
-          {productForm()}
-          {goBack()}
+      <div className="container">
+        <div className="row">
+          <div className="col-md-8 offset-md-2">
+            {showError(error, error)}
+            {showLoading(loading)}
+            {showSuccess(success, "Product Added Successfully!")}
+            {productForm()}
+            {goBack()}
+          </div>
         </div>
       </div>
     </Layout>

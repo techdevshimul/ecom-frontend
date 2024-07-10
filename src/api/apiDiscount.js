@@ -9,6 +9,22 @@ export const getDiscountAPI = (token, code) => {
   });
 };
 
+export const getDiscountCouponsAPI = (token) => {
+  return axios.get(`${API}/discount/all`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const deleteCouponAPI = (token, id) => {
+  return axios.delete(`${API}/discount/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const createDiscountAPI = (token, data) => {
   return axios.post(`${API}/discount`, data, {
     headers: {

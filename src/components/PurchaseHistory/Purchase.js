@@ -172,7 +172,14 @@ const Purchase = ({ purchase, serial }) => {
           </p>
           <p>
             <span style={{ fontWeight: "bold" }}>Transaction Status : </span>
-            {transaction_data.length != 0 ? transaction_data[0].status : "N/A"}
+            {transaction_data.length != 0 &&
+            transaction_data[0].status === "VALID" ? (
+              <span className="text-success" style={{ fontWeight: "bold" }}>
+                Validated{" "}
+              </span>
+            ) : (
+              "N/A"
+            )}
           </p>
         </div>
       </div>
