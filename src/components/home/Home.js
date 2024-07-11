@@ -16,7 +16,7 @@ import { addToCart } from "../../api/apiOrder";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState();
-  const [limit, setLimit] = useState(2);
+  const [limit, setLimit] = useState(10);
   const [order, setOrder] = useState("descending");
   const [sortBy, setSortBy] = useState("createdAt");
   const [error, setError] = useState(false);
